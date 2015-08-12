@@ -5,19 +5,23 @@ Installation
 
 Ensure you have the necessary prerequisites installed:
 
-    sudo apt-get install git linux-headers-(uname -r) build-essential dkms
+    sudo apt-get install git linux-headers-$(uname -r) build-essential dkms
 
 Clone this repository:
 
     git clone https://github.com/ferstar/rtl8192cu-fixes.git
 
+Change branch to raspberry:
+
+    git checkout raspberry
+
 Set it up as a DKMS module:
 
     sudo dkms add ./rtl8192cu-fixes
 
-Build and install it:
+Build and install it(add `--force` if you have previous installed the driver from other place:) ):
 
-    sudo dkms install 8192cu/1.10
+    sudo dkms install 8192cu/1.10 --force
 
 Refresh the module list:
 
