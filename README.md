@@ -62,3 +62,14 @@ Credits
 This repository was initially based on Timothy Phillips's work as published here: https://code.google.com/p/realtek-8188cus-wireless-drivers-3444749-ubuntu-1304/, though no longer.
 
 Thanks go to Saqib Razaq (@s-razaq) for the power management workaround.
+
+Addition
+=======
+
+If you want to remove this driver package someday:
+
+    sudo dkms remove -m 8192cu/1.10 --all
+    sudo rm /etc/modprobe.d/8192cu-disable-power-management.conf
+    sudo rm /etc/modprobe.d/blacklist-native-rtl8192.conf
+
+And reboot. You're done.
