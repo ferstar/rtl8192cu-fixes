@@ -5,11 +5,11 @@ Installation
 
 Ensure you have the necessary prerequisites installed:
 
-    sudo apt-get install git linux-headers-generic build-essential dkms
+    sudo apt-get install git linux-headers-(uname -r) build-essential dkms
 
 Clone this repository:
 
-    git clone https://github.com/pvaret/rtl8192cu-fixes.git
+    git clone https://github.com/ferstar/rtl8192cu-fixes.git
 
 Set it up as a DKMS module:
 
