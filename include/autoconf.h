@@ -324,7 +324,7 @@
 
 //#define DBG_MEMORY_LEAK	1
 
-#define DBG_CONFIG_ERROR_DETECT
+//#define DBG_CONFIG_ERROR_DETECT
 //#define DBG_CONFIG_ERROR_RESET
 
 //TX use 1 urb
