@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Rtl8192cu-fixes by ferstar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Rtl8192cu-fixes</h1>
+      <h2 class="project-tagline">Realtek 8192 chipset driver, ported to kernel 3.11 or above</h2>
+      <a href="https://github.com/ferstar/rtl8192cu-fixes" class="btn">View on GitHub</a>
+      <a href="https://github.com/ferstar/rtl8192cu-fixes/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/ferstar/rtl8192cu-fixes/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <p>This is a port of Realtek's own 8192CU driver for USB WiFi devices on Ubuntu 13.10 and later.</p>
+
+<h1>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h1>
+
+<p>Ensure you have the necessary prerequisites installed:</p>
+
+<pre><code>sudo apt-get install git linux-headers-$(uname -r) build-essential dkms
+</code></pre>
+
+<p>Clone this repository:</p>
+
+<pre><code>git clone https://github.com/ferstar/rtl8192cu-fixes.git
+</code></pre>
+
+<p>Change branch to raspberry:</p>
+
+<pre><code>git checkout raspberry
+</code></pre>
+
+<p>Set it up as a DKMS module:</p>
+
+<pre><code>sudo dkms add ./rtl8192cu-fixes
+</code></pre>
+
+<p>Build and install it(add <code>--force</code> if you have previous installed the driver from other place:) ):</p>
+
+<pre><code>sudo dkms install 8192cu/1.10 --force
+</code></pre>
+
+<p>Refresh the module list:</p>
+
+<pre><code>sudo depmod -a
+</code></pre>
+
+<p>Ensure the native (and broken) kernel driver is blacklisted:</p>
+
+<pre><code>sudo cp ./rtl8192cu-fixes/blacklist-native-rtl8192.conf /etc/modprobe.d/
+</code></pre>
+
+<p>And reboot. You're done.</p>
+
+<h1>
+<a id="other-distributions" class="anchor" href="#other-distributions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Other distributions</h1>
+
+<p>The instructions above should work in every Debian-based distribution. So long as you can install the prerequisites on your own, everything after the line that contains <code>apt-get</code> should work in other distributions as well.</p>
+
+<p>On Gentoo, you can disregard the instructions above and just install the following ebuild: <a href="https://gitweb.gentoo.org/dev/maksbotan.git/tree/sys-kernel/rtl8192cu-fixes/rtl8192cu-fixes-9999.ebuild">https://gitweb.gentoo.org/dev/maksbotan.git/tree/sys-kernel/rtl8192cu-fixes/rtl8192cu-fixes-9999.ebuild</a></p>
+
+<h1>
+<a id="troubleshooting" class="anchor" href="#troubleshooting" aria-hidden="true"><span class="octicon octicon-link"></span></a>Troubleshooting</h1>
+
+<p>There is a known issue with power management on some hardware. If your WiFi connection drops after a few minutes, install the following module setting file to disable power management in your WiFi interface:</p>
+
+<pre><code>sudo cp ./rtl8192cu-fixes/8192cu-disable-power-management.conf /etc/modprobe.d/
+</code></pre>
+
+<p>And then reboot.</p>
+
+<h1>
+<a id="current-status" class="anchor" href="#current-status" aria-hidden="true"><span class="octicon octicon-link"></span></a>Current status</h1>
+
+<p>As it currently stands, the driver doesn't populate /proc with informational data from the driver. The API for /proc has changed in recent kernels, and the driver hasn't yet been ported to the new API.</p>
+
+<p>This driver is known to work with some RTL8192CU devices like the Belkin N300 and TP-Link TL-WN823N, and should work with some 8188CUS, RTL8188CE-VAU and RTL8188RU devices as well. However, it is known not to work well with devices using dual antennas, such as the TP-Link WN8200ND, apparently due to an incomplete MIMO implementation in the upstream driver.</p>
+
+<h1>
+<a id="credits" class="anchor" href="#credits" aria-hidden="true"><span class="octicon octicon-link"></span></a>Credits</h1>
+
+<p>This repository was initially based on Timothy Phillips's work as published here: <a href="https://code.google.com/p/realtek-8188cus-wireless-drivers-3444749-ubuntu-1304/">https://code.google.com/p/realtek-8188cus-wireless-drivers-3444749-ubuntu-1304/</a>, though no longer.</p>
+
+<p>Thanks go to Saqib Razaq (<a href="https://github.com/s-razaq" class="user-mention">@s-razaq</a>) for the power management workaround.</p>
+
+<h1>
+<a id="addition" class="anchor" href="#addition" aria-hidden="true"><span class="octicon octicon-link"></span></a>Addition</h1>
+
+<p>If you want to remove this driver package someday:</p>
+
+<pre><code>sudo dkms remove -m 8192cu/1.10 --all
+sudo rm /etc/modprobe.d/8192cu-disable-power-management.conf
+sudo rm /etc/modprobe.d/blacklist-native-rtl8192.conf
+</code></pre>
+
+<p>And reboot. You're done.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/ferstar/rtl8192cu-fixes">Rtl8192cu-fixes</a> is maintained by <a href="https://github.com/ferstar">ferstar</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
